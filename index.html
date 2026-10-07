@@ -1,0 +1,1862 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consultório de Orientação Vocacional e Académica MZ</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #070d1b, #0f172a, #132238);
+      color: #f8fafc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 16px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 600px;
+      background-color: #111c33;
+      border-radius: 18px;
+      border: 1px solid #283956;
+      overflow: hidden;
+      box-shadow: 0 14px 35px rgba(0,0,0,0.6);
+    }
+
+    .header {
+      background: linear-gradient(135deg, #0284c7, #0d9488, #047857);
+      padding: 26px 20px 22px 20px;
+      text-align: center;
+      position: relative;
+      border-bottom: 3px solid #38bdf8;
+    }
+
+    .header h1 {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-top: 6px;
+      padding-right: 50px;
+      padding-left: 10px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .header p {
+      font-size: 12px;
+      color: #e0f2fe;
+      margin-top: 6px;
+      padding-right: 40px;
+      padding-left: 10px;
+    }
+
+    .lang-selector {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background-color: rgba(7, 13, 27, 0.95);
+      color: #38bdf8;
+      border: 1px solid #38bdf8;
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: bold;
+      cursor: pointer;
+      outline: none;
+      max-width: 140px;
+    }
+
+    .progress-bar {
+      height: 5px;
+      background-color: #1e293b;
+      width: 100%;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #38bdf8, #10b981);
+      width: 20%;
+      transition: width 0.3s ease;
+    }
+
+    .body-content {
+      padding: 22px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #38bdf8;
+      margin-bottom: 8px;
+      letter-spacing: 0.6px;
+    }
+
+    input, select {
+      width: 100%;
+      background-color: #080f1e;
+      border: 1px solid #334155;
+      border-radius: 9px;
+      padding: 12px;
+      color: #ffffff;
+      font-size: 13px;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    input:focus, select:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 240px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .options-grid::-webkit-scrollbar {
+      width: 6px;
+    }
+    .options-grid::-webkit-scrollbar-thumb {
+      background-color: #334155;
+      border-radius: 4px;
+    }
+
+    .option-card {
+      background-color: #182642;
+      border: 2px solid #2b3e60;
+      border-radius: 10px;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 13px;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+    }
+
+    .option-card:hover {
+      border-color: #38bdf8;
+      background-color: #203358;
+      color: #ffffff;
+    }
+
+    .option-card.selected {
+      border-color: #38bdf8;
+      background: linear-gradient(135deg, #0369a1, #0284c7);
+      color: #ffffff;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+    }
+
+    .option-card.selected::after {
+      content: "✓ 1ª Opção";
+      color: #e0f2fe;
+      font-size: 10px;
+      font-weight: bold;
+      background: rgba(0,0,0,0.3);
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .option-card.selected-second {
+      border-color: #10b981;
+      background: linear-gradient(135deg, #065f46, #047857);
+      color: #ffffff;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    .option-card.selected-second::after {
+      content: "✓ 2ª Opção";
+      color: #a7f3d0;
+      font-size: 10px;
+      font-weight: bold;
+      background: rgba(0,0,0,0.3);
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .btn {
+      flex: 1;
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      color: #ffffff !important;
+      font-weight: 700;
+      border: none;
+      padding: 12px;
+      border-radius: 9px;
+      font-size: 14px;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+      transition: filter 0.2s;
+    }
+
+    .btn:hover {
+      filter: brightness(1.1);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #10b981, #059669);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+      color: #ffffff !important;
+    }
+
+    .btn-secondary {
+      background-color: #334155;
+      color: #ffffff !important;
+      box-shadow: none;
+    }
+
+    .btn-secondary:hover {
+      background-color: #475569;
+    }
+
+    .btn-toggle-view {
+      padding: 10px;
+      font-size: 12px;
+      border-radius: 8px;
+      border: 1px solid #334155;
+      background-color: #182642;
+      color: #94a3b8;
+      cursor: pointer;
+      font-weight: bold;
+      flex: 1;
+      text-align: center;
+    }
+
+    .btn-toggle-view.active-1 {
+      background: linear-gradient(135deg, #0369a1, #0284c7);
+      color: #ffffff;
+      border-color: #38bdf8;
+    }
+
+    .btn-toggle-view.active-2 {
+      background: linear-gradient(135deg, #065f46, #047857);
+      color: #ffffff;
+      border-color: #10b981;
+    }
+
+    .pay-box {
+      background-color: #080f1e;
+      border: 1px solid #283956;
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .price {
+      font-size: 34px;
+      font-weight: 800;
+      color: #10b981;
+      margin: 6px 0;
+      text-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+    }
+
+    .welcome-banner {
+      background: linear-gradient(135deg, #0c4a6e, #075985);
+      border: 1px solid #38bdf8;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      color: #e0f2fe;
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+
+    .course-title {
+      font-size: 15px;
+      color: #38bdf8;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .main-img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #334155;
+    }
+
+    .gallery-grid {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .gallery-img {
+      width: 50%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid #334155;
+    }
+
+    .info-section {
+      margin-bottom: 16px;
+      background-color: #080f1e;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid #283956;
+    }
+
+    .info-section h3 {
+      font-size: 11px;
+      color: #38bdf8;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      letter-spacing: 0.6px;
+    }
+
+    .info-section p, .info-section ul {
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+
+    .badge-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .badge {
+      background-color: #1e3a8a;
+      color: #93c5fd;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .exam-tag {
+      display: inline-block;
+      background-color: #065f46;
+      color: #a7f3d0;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .certificate-card {
+      background-color: #ffffff;
+      color: #1e293b;
+      border: 8px double #d97706;
+      border-radius: 14px;
+      padding: 24px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .cert-header {
+      border-bottom: 2px solid #cbd5e1;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+    }
+
+    .cert-header h3 {
+      font-size: 14px;
+      color: #d97706;
+      font-weight: bold;
+      margin-top: 4px;
+    }
+
+    .cert-rumo {
+      font-size: 12px;
+      font-weight: 800;
+      color: #0284c7;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-top: 6px;
+      background-color: #e0f2fe;
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 4px;
+      border: 1px solid #bae6fd;
+    }
+
+    .cert-ref {
+      font-size: 10px;
+      color: #64748b;
+      margin-top: 6px;
+    }
+
+    .cert-body {
+      text-align: left;
+      font-size: 12px;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .cert-table {
+      width: 100%;
+      margin: 12px 0;
+      border-collapse: collapse;
+    }
+
+    .cert-table td {
+      padding: 6px 4px;
+      border-bottom: 1px dashed #cbd5e1;
+      font-size: 12px;
+    }
+
+    .cert-table td.label {
+      font-weight: bold;
+      color: #475569;
+      width: 42%;
+    }
+
+    .cert-table td.val {
+      color: #0f172a;
+      font-weight: 600;
+    }
+
+    .cert-seal {
+      margin: 16px auto 10px auto;
+      width: 60px;
+      height: 60px;
+      border: 2px dashed #d97706;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: bold;
+      color: #b45309;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 4px;
+      background-color: #fffbeb;
+    }
+
+    .cert-footer-rumo {
+      margin-top: 14px;
+      padding-top: 8px;
+      border-top: 1px solid #e2e8f0;
+      font-size: 11px;
+      font-weight: bold;
+      color: #0f766e;
+      text-align: center;
+    }
+
+    .search-box-global {
+      background-color: #080f1e;
+      border: 1px solid #38bdf8;
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 14px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+      }
+      .card {
+        border: none;
+        box-shadow: none;
+        max-width: 100%;
+      }
+      .header, .progress-bar, .btn-group, #no-print-area {
+        display: none !important;
+      }
+      .certificate-card {
+        border: 4px double #000;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    
+    <div class="header">
+      <select id="langSelect" class="lang-selector" onchange="changeLanguage(this.value)">
+        <option value="pt">🇵🇹 Português</option>
+        <option value="en">🇬🇧 English</option>
+        <option value="fr">🇫🇷 Français</option>
+      </select>
+
+      <h1 id="t-title">Consultório Vocacional Moçambique</h1>
+      <p id="t-subtitle">Orientação baseada no nível de ensino e província</p>
+    </div>
+
+    <div class="progress-bar">
+      <div id="progress" class="progress-fill"></div>
+    </div>
+
+    <div class="body-content">
+      
+      <!-- PASSO 1 -->
+      <div id="step-1">
+        <div class="form-group">
+          <label id="t-lbl-name">Nome Completo do Estudante</label>
+          <input type="text" id="userName" placeholder="Ex: Alcide Armando">
+        </div>
+
+        <div class="form-group">
+          <label id="t-lbl-prov">Seleciona a Tua Província Atual (Filtro Geográfico)</label>
+          <div class="options-grid" id="provinceOptions">
+            <div class="option-card" onclick="selectProvince('Maputo Cidade', this)">Maputo Cidade</div>
+            <div class="option-card" onclick="selectProvince('Maputo Província', this)">Maputo Província</div>
+            <div class="option-card" onclick="selectProvince('Gaza', this)">Gaza</div>
+            <div class="option-card" onclick="selectProvince('Inhambane', this)">Inhambane</div>
+            <div class="option-card" onclick="selectProvince('Sofala', this)">Sofala (Beira)</div>
+            <div class="option-card" onclick="selectProvince('Manica', this)">Manica</div>
+            <div class="option-card" onclick="selectProvince('Tete', this)">Tete</div>
+            <div class="option-card" onclick="selectProvince('Zambézia', this)">Zambézia (Quelimane)</div>
+            <div class="option-card" onclick="selectProvince('Nampula', this)">Nampula</div>
+            <div class="option-card" onclick="selectProvince('Niassa', this)">Niassa (Lichinga)</div>
+            <div class="option-card" onclick="selectProvince('Cabo Delgado', this)">Cabo Delgado (Pemba)</div>
+          </div>
+        </div>
+
+        <button onclick="nextStep(2)" class="btn" id="t-btn-next1">Próximo Passo</button>
+      </div>
+
+      <!-- PASSO 2 -->
+      <div id="step-2" class="hidden">
+        <div class="form-group">
+          <label id="t-lbl-level">Nível de Escolaridade Atual</label>
+          <div class="options-grid" id="levelOptions">
+            <div class="option-card selected" onclick="selectLevelCard(this, '12ª Classe / Pré-Universitário (Acesso a Universidades)')" id="t-lvl-12">12ª Classe / Pré-Universitário (Acesso a Universidades)</div>
+            <div class="option-card" onclick="selectLevelCard(this, '10ª Classe (Ensino Médio Técnico)')" id="t-lvl-10">10ª Classe (Ensino Médio Técnico)</div>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top:14px;">
+          <label id="t-lbl-exams-group" style="color:#38bdf8;">🎯 Seleciona as Disciplinas Principais / Área de Foco:</label>
+          <div class="options-grid" id="examSubjectOptions">
+            <div class="option-card" onclick="selectExamSubject(this, 'Matemática e Física')" id="t-ex-mat-fis">Matemática + Física (Engenharias / Tecnologias / Técnico Industrial)</div>
+            <div class="option-card" onclick="selectExamSubject(this, 'Biologia e Química')" id="t-ex-bio-qui">Biologia + Química (Medicina / Saúde / Agropecuária)</div>
+            <div class="option-card" onclick="selectExamSubject(this, 'Matemática e Português')" id="t-ex-mat-por">Matemática + Português (Informática / Contabilidade / Gestão)</div>
+            <div class="option-card" onclick="selectExamSubject(this, 'Português e História')" id="t-ex-por-his">Português + História (Direito / Secretariado / Humanidades)</div>
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <button onclick="nextStep(1)" class="btn btn-secondary" id="t-btn-back1">Voltar</button>
+          <button onclick="nextStep(3)" class="btn" id="t-btn-next2">Próximo Passo</button>
+        </div>
+      </div>
+
+      <!-- PASSO 3 -->
+      <div id="step-3" class="hidden">
+        <div class="form-group">
+          <label id="instLabelTitle">Instituições Públicas Disponíveis na Província Selecionada</label>
+          <div id="instNote" class="hidden" style="font-size:11px; color:#fcd34d; background:#2a2108; border:1px solid #92400e; border-radius:8px; padding:8px 10px; margin-bottom:8px; line-height:1.4;"></div>
+          <div class="options-grid" id="universityOptions"></div>
+        </div>
+
+        <!-- NOVO: faculdades / unidades dentro da universidade escolhida (só 12ª classe) -->
+        <div class="form-group hidden" id="unitsGroup">
+          <label id="t-lbl-units">Faculdades / Unidades desta Universidade (com cursos da tua área)</label>
+          <div class="options-grid" id="unitOptions"></div>
+        </div>
+
+        <div class="btn-group">
+          <button onclick="nextStep(2)" class="btn btn-secondary" id="t-btn-back2">Voltar</button>
+          <button onclick="nextStep(4)" class="btn btn-success" id="t-btn-pay">Ir para Pagamento</button>
+        </div>
+      </div>
+
+      <!-- PASSO 4 -->
+      <div id="step-4" class="hidden">
+        <div class="pay-box">
+          <span id="t-pay-title" style="font-size:11px; text-transform:uppercase; color:#38bdf8; font-weight: 700;">Taxa do Consultório Vocacional</span>
+          <div class="price">128 MZN</div>
+          
+          <div class="form-group" style="text-align: left; margin-top: 14px;">
+            <label id="t-pay-method" style="color: #38bdf8;">Selecione uma opção de método de pagamento:</label>
+            <select id="paymentMethodSelect">
+              <option value="mpesa">M-Pesa (Vodacom)</option>
+              <option value="emola">e-Mola (Movitel)</option>
+              <option value="mkesh">mKesh (Tmcel)</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 12px;">
+          <a href="https://paysuite.tech/checkout/01m2z29y46b9g4k2p1a96a5907" 
+             target="_blank" 
+             class="btn btn-success"
+             id="t-pay-btn"
+             style="padding: 14px; display: block; text-align: center; font-size: 15px;">
+              🔒 Efetuar Pagamento de 128 MT na PaySuite
+          </a>
+        </div>
+
+        <button id="btnModoTeste" onclick="proceedAfterPayment()" class="btn btn-secondary" style="width: 100%; font-size: 11px; background-color: #1e293b; border: 1px solid #334155; padding: 10px;">
+          ⚡ Já concluí o pagamento / Continuar (Modo Teste)
+        </button>
+        
+        <div class="btn-group">
+          <button onclick="nextStep(3)" class="btn btn-secondary" id="t-btn-back3" style="margin-top:10px;">Voltar</button>
+        </div>
+      </div>
+
+      <!-- PASSO 5 -->
+      <div id="step-5" class="hidden">
+        <div class="welcome-banner">
+          <span id="t-wel-att">Atendimento para</span>: <strong id="displayUser"></strong><br>
+          <small><span id="t-wel-lvl-lbl">Nível</span>: <span id="displayLevel" style="color:#38bdf8;"></span> | <span id="t-wel-prov">Província</span>: <span id="displayProvince"></span></small><br>
+          <small><span id="t-wel-inst">Instituição Local</span>: <strong id="displayUniversity" style="color:#34d399;"></strong></small>
+        </div>
+
+        <div class="search-box-global">
+          <label id="t-lbl-global" style="color:#38bdf8; margin-bottom:4px;">🔍 Consulta Global de Cursos Públicos em Moçambique:</label>
+          <input type="text" id="globalCourseSearch" placeholder="Ex: Engenharia Civil, Contabilidade..." oninput="filterGlobalCourses(this.value)">
+          <div id="globalSearchResults" style="margin-top:8px; max-height:130px; overflow-y:auto;"></div>
+        </div>
+
+        <div class="form-group">
+          <label id="t-lbl-opt1" style="color:#38bdf8;">⭐ CURSOS COMPATÍVEIS DA INSTITUIÇÃO (1ª OPÇÃO)</label>
+          <div class="options-grid" id="firstCourseOptions"></div>
+        </div>
+
+        <div class="form-group" style="margin-top:16px;">
+          <label id="t-lbl-opt2" style="color:#34d399;">🛡️ CURSOS ESTRATÉGICOS ALTERNATIVOS (2ª OPÇÃO)</label>
+          <div class="options-grid" id="secondCourseOptions"></div>
+        </div>
+
+        <div style="display:flex; gap:8px; margin-top:20px;">
+          <button id="btnView1" onclick="switchDetailView(1)" class="btn-toggle-view active-1">👁️ Ver Detalhes da 1ª Opção</button>
+          <button id="btnView2" onclick="switchDetailView(2)" class="btn-toggle-view">👁️ Ver Detalhes da 2ª Opção</button>
+        </div>
+
+        <h2 id="courseTitle" class="course-title" style="margin-top:14px; padding-top: 6px;"></h2>
+        
+        <img id="courseImgMain" src="" alt="Profissional em Ação" class="main-img">
+        
+        <label id="t-lbl-daily" style="margin-top:6px;">Fotos Ilustrativas da Profissão no Terreno:</label>
+        <div class="gallery-grid">
+          <img id="courseImgSub1" src="" class="gallery-img" alt="Trabalho prático 1">
+          <img id="courseImgSub2" src="" class="gallery-img" alt="Trabalho prático 2">
+        </div>
+
+        <div class="info-section">
+          <h3 id="t-sec-dur">Duração & Regime Académico</h3>
+          <div class="badge-bar">
+            <span id="courseDuration" class="badge"></span>
+            <span id="courseRegime" class="badge">Presencial / Público</span>
+          </div>
+        </div>
+
+        <div class="info-section">
+          <h3 id="t-sec-exams">Requisitos Oficiais de Admissão</h3>
+          <div id="courseExams" class="exam-tag"></div>
+        </div>
+
+        <div class="info-section">
+          <h3 id="t-sec-desc">O Que Se Estuda & O Que o Profissional Faz</h3>
+          <p id="courseDesc"></p>
+        </div>
+
+        <div class="info-section" style="border-color: #38bdf8; background-color: #0c1a2e;">
+          <h3 id="t-sec-work" style="color:#38bdf8;">💼 Onde Você Pode Trabalhar em Moçambique</h3>
+          <p id="courseWorkplace" style="color: #e0f2fe; font-weight: 500;"></p>
+        </div>
+
+        <div class="info-section">
+          <h3 id="t-links-title">Links Úteis para Preparação e Bolsas:</h3>
+          <div style="display:flex; flex-direction:column; gap:8px; margin-top:8px;">
+            <a href="https://www.mctes.gov.mz/" target="_blank" class="btn btn-download" id="t-link-scholar" style="background-color:#d97706; text-align:center;">🎓 Portal do Ministério do Ensino Superior (MCTES)</a>
+            <a href="https://exames.mozestuda.com/" target="_blank" class="btn btn-download" id="t-link-moz" style="background-color:#059669; text-align:center;">📚 Baixar Exames Resolvidos em PDF (MozEstuda)</a>
+            <a href="https://eduskills.co.mz/" target="_blank" class="btn btn-download" id="t-link-edu" style="background-color:#0d9488; text-align:center;">📖 Biblioteca de Provas Resolvidas (EduSkills)</a>
+          </div>
+        </div>
+
+        <button onclick="confirmDefinitiveCourse()" class="btn btn-success" id="t-btn-confirm" style="width:100%; margin-top:10px;">
+          Confirmar Escolha e Emitir Ficha Vocacional
+        </button>
+
+        <div class="btn-group">
+          <button onclick="resetApp()" class="btn btn-secondary" id="t-btn-new-consult">Fazer Nova Consulta</button>
+        </div>
+      </div>
+
+      <!-- PASSO 6 -->
+      <div id="step-6" class="hidden">
+        <div class="certificate-card">
+          <div class="cert-header">
+            <div style="font-size: 38px; margin-bottom: 4px;">🎓</div>
+            <h3 id="t-cert-head">FICHA DE ORIENTAÇÃO VOCACIONAL E ACADÉMICA</h3>
+            <div class="cert-rumo">Rumo Universitário 2026</div>
+            <div class="cert-ref" id="certRefCode">REF: POA-MZ-2026-XXXX</div>
+          </div>
+
+          <div class="cert-body">
+            <p id="t-cert-desc" style="margin-bottom:10px;">Certifica-se que o(a) candidato(a) definiu o seu plano de exames de admissão e concorre para:</p>
+            
+            <table class="cert-table">
+              <tr>
+                <td class="label" id="t-c-name">Nome do Estudante:</td>
+                <td class="val" id="certName">--</td>
+              </tr>
+              <tr>
+                <td class="label" id="t-c-prov">Província:</td>
+                <td class="val" id="certProvince">--</td>
+              </tr>
+              <tr>
+                <td class="label" id="t-c-level">Nível de Ensino:</td>
+                <td class="val" id="certLevel" style="color:#0284c7; font-weight:bold;">--</td>
+              </tr>
+              <tr>
+                <td class="label" id="t-c-inst">Instituição Local:</td>
+                <td class="val" id="certUniversity">--</td>
+              </tr>
+              <tr>
+                <td class="label" id="t-c-opt1">1ª Opção:</td>
+                <td class="val" id="certCourse1" style="color:#d97706; font-weight:bold;">--</td>
+              </tr>
+              <tr>
+                <td class="label" id="t-c-opt2">2ª Opção (Estratégico):</td>
+                <td class="val" id="certCourse2" style="color:#059669; font-weight:bold;">--</td>
+              </tr>
+            </table>
+
+            <p id="t-c-parecer" style="font-size:11px; color:#475569; margin-top:8px;">
+              <strong>Parecer de Preparação:</strong> O candidato cumpre os requisitos de elegibilidade para a via pública selecionada.
+            </p>
+          </div>
+
+          <div class="cert-seal" id="t-c-seal">
+            Selo de<br>Validação<br>Digital
+          </div>
+
+          <div class="cert-footer-rumo">
+            🎓 Rumo Universitário 2026
+          </div>
+        </div>
+
+        <div id="no-print-area">
+          <div class="btn-group" style="margin-top:16px;">
+            <button onclick="window.print()" class="btn btn-success" id="t-btn-print">🖨 Imprimir / Salvar Ficha em PDF</button>
+          </div>
+
+          <div class="btn-group" style="margin-top:12px;">
+            <button onclick="resetApp()" class="btn btn-secondary" id="t-btn-new-orient">Fazer Nova Orientação</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'consultorio_vocacional_mz_v19';
+    const MODO_TESTE = true;
+
+    const translations = {
+      pt: {
+        title: "Consultório Vocacional Moçambique",
+        subtitle: "Orientação baseada no nível de ensino e província",
+        lblName: "Nome Completo do Estudante",
+        lblProv: "Seleciona a Tua Província Atual (Filtro Geográfico)",
+        btnNext1: "Próximo Passo",
+        placeholderName: "Ex: Alcide Armando",
+        lblLevel: "Nível de Escolaridade Atual",
+        lvl12: "12ª Classe / Pré-Universitário (Acesso a Universidades)",
+        lvl10: "10ª Classe (Ensino Médio Técnico)",
+        lblExamsGroup: "🎯 Seleciona as Disciplinas Principais / Área de Foco:",
+        exMatFis: "Matemática + Física (Engenharias / Tecnologias / Técnico Industrial)",
+        exBioQui: "Biologia + Química (Medicina / Saúde / Agropecuária)",
+        exMatPor: "Matemática + Português (Informática / Contabilidade / Gestão)",
+        exPorHis: "Português + História (Direito / Secretariado / Humanidades)",
+        btnBack1: "Voltar",
+        btnNext2: "Próximo Passo",
+        instLabelTitle: "Instituições Públicas Disponíveis na Província Selecionada",
+        lblUnits: "Faculdades / Unidades desta Universidade (com cursos da tua área)",
+        noteFallback: "Ainda não temos registo desta área na tua província. Mostramos universidades públicas de outras províncias.",
+        lblCoursesWord: "Cursos",
+        lblExamsWord: "Exames de admissão",
+        alertUnit: "Por favor, escolhe uma faculdade / unidade.",
+        btnBack2: "Voltar",
+        btnPay: "Ir para Pagamento",
+        payTitle: "Taxa do Consultório Vocacional",
+        payMethod: "Selecione uma opção de método de pagamento:",
+        payBtn: "🔒 Efetuar Pagamento de 128 MT na PaySuite",
+        btnTest: "⚡ Já concluí o pagamento / Continuar (Modo Teste)",
+        btnBack3: "Voltar",
+        welAtt: "Atendimento para",
+        welProv: "Província",
+        welLvlLbl: "Nível",
+        welExams: "Área de Foco",
+        welInst: "Instituição Local",
+        lblGlobal: "🔍 Consulta Global de Cursos Públicos em Moçambique:",
+        lblOpt1: "⭐ CURSOS COMPATÍVEIS DA INSTITUIÇÃO (1ª OPÇÃO)",
+        lblOpt2: "🛡️ CURSOS ESTRATÉGICOS ALTERNATIVOS (2ª OPÇÃO)",
+        btnView1: "👁️ Ver Detalhes da 1ª Opção",
+        btnView2: "👁️ Ver Detalhes da 2ª Opção",
+        lblDaily: "Fotos Ilustrativas da Profissão no Terreno:",
+        secDur: "Duração & Regime Académico",
+        secExams: "Requisitos Oficiais de Admissão",
+        secDesc: "O Que Se Estuda & O Que o Profissional Faz",
+        secWork: "💼 Onde Você Pode Trabalhar em Moçambique",
+        linksTitle: "Links Úteis para Preparação e Bolsas:",
+        linkScholar: "🎓 Portal do Ministério do Ensino Superior (MCTES)",
+        linkMoz: "📚 Baixar Exames Resolvidos em PDF (MozEstuda)",
+        linkEdu: "📖 Biblioteca de Provas Resolvidas (EduSkills)",
+        btnConfirm: "Confirmar Escolha e Emitir Ficha Vocacional",
+        btnNewConsult: "Fazer Nova Consulta",
+        certHead: "FICHA DE ORIENTAÇÃO VOCACIONAL E ACADÉMICA",
+        certDesc: "Certifica-se que o(a) candidato(a) definiu o seu plano de exames de admissão e concorre para:",
+        cName: "Nome do Estudante:",
+        cProv: "Província:",
+        cLevel: "Nível de Ensino:",
+        cInst: "Instituição Local:",
+        cOpt1: "1ª Opção:",
+        cOpt2: "2ª Opção (Estratégico):",
+        cParecer: "Parecer de Preparação: O candidato cumpre os requisitos de elegibilidade para a via pública selecionada.",
+        cSeal: "Selo de<br>Validação<br>Digital",
+        btnPrint: "🖨 Imprimir / Salvar Ficha em PDF",
+        btnNewOrient: "Fazer Nova Orientação"
+      },
+      en: {
+        title: "Mozambique Vocational Guidance Office",
+        subtitle: "Guidance based on education level and province",
+        lblName: "Student Full Name",
+        lblProv: "Select Your Current Province (Geographic Filter)",
+        btnNext1: "Next Step",
+        placeholderName: "E.g., Alcide Armando",
+        lblLevel: "Current Education Level",
+        lvl12: "12th Grade / Pre-University (University Access)",
+        lvl10: "10th Grade (Technical Secondary Education)",
+        lblExamsGroup: "🎯 Select Main Subjects / Focus Area:",
+        exMatFis: "Math + Physics (Engineering / Technologies / Industrial)",
+        exBioQui: "Biology + Chemistry (Medicine / Health / Agriculture)",
+        exMatPor: "Math + Portuguese (IT / Accounting / Management)",
+        exPorHis: "Portuguese + History (Law / Secretariat / Humanities)",
+        btnBack1: "Back",
+        btnNext2: "Next Step",
+        instLabelTitle: "Public Institutions Available in the Selected Province",
+        lblUnits: "Faculties / Units of this University (with courses in your area)",
+        noteFallback: "We have no record of this area in your province yet. Showing public universities from other provinces.",
+        lblCoursesWord: "Courses",
+        lblExamsWord: "Admission exams",
+        alertUnit: "Please choose a faculty / unit.",
+        btnBack2: "Back",
+        btnPay: "Proceed to Payment",
+        payTitle: "Vocational Office Fee",
+        payMethod: "Select a payment method option:",
+        payBtn: "🔒 Make Payment of 128 MT on PaySuite",
+        btnTest: "⚡ Already paid / Continue (Test Mode)",
+        btnBack3: "Back",
+        welAtt: "Consultation for",
+        welProv: "Province",
+        welLvlLbl: "Level",
+        welExams: "Focus Area",
+        welInst: "Local Institution",
+        lblGlobal: "🔍 Global Search for Public Courses in Mozambique:",
+        lblOpt1: "⭐ COMPATIBLE INSTITUTION COURSES (1ST OPTION)",
+        lblOpt2: "🛡️ STRATEGIC ALTERNATIVE COURSES (2ND OPTION)",
+        btnView1: "👁️ View 1st Option Details",
+        btnView2: "👁️ View 2nd Option Details",
+        lblDaily: "Illustrative Field Photos of the Profession:",
+        secDur: "Duration & Academic Regime",
+        secExams: "Official Admission Requirements",
+        secDesc: "What You Study & What the Professional Does",
+        secWork: "💼 Where You Can Work in Mozambique",
+        linksTitle: "Useful Links for Preparation and Scholarships:",
+        linkScholar: "🎓 Ministry of Higher Education Portal (MCTES)",
+        linkMoz: "📚 Download Solved Exams PDF (MozEstuda)",
+        linkEdu: "📖 Solved Exams Library (EduSkills)",
+        btnConfirm: "Confirm Choice and Issue Vocational Form",
+        btnNewConsult: "Make New Consultation",
+        certHead: "VOCATIONAL AND ACADEMIC GUIDANCE FORM",
+        certDesc: "This certifies that the candidate has defined their admission exam plan and applies for:",
+        cName: "Student Name:",
+        cProv: "Province:",
+        cLevel: "Education Level:",
+        cInst: "Local Institution:",
+        cOpt1: "1st Option:",
+        cOpt2: "2nd Option (Strategic):",
+        cParecer: "Preparation Status: The candidate meets the eligibility requirements for the selected public track.",
+        cSeal: "Digital<br>Validation<br>Seal",
+        btnPrint: "🖨 Print / Save Form as PDF",
+        btnNewOrient: "Make New Guidance"
+      },
+      fr: {
+        title: "Cabinet d'Orientation Vocationnelle Mozambique",
+        subtitle: "Orientation basée sur le niveau d'études et la province",
+        lblName: "Nom complet de l'étudiant",
+        lblProv: "Sélectionnez votre province actuelle (Filtre géographique)",
+        btnNext1: "Étape suivante",
+        placeholderName: "Ex: Alcide Armando",
+        lblLevel: "Niveau d'études actuel",
+        lvl12: "12e année / Pré-universitaire (Accès universitaire)",
+        lvl10: "10e année (Enseignement secondaire technique)",
+        lblExamsGroup: "🎯 Sélectionnez les matières principales / Domaine d'intérêt :",
+        exMatFis: "Maths + Physique (Ingénierie / Technologies / Industriel)",
+        exBioQui: "Biologie + Chimie (Médecine / Santé / Agriculture)",
+        exMatPor: "Maths + Portugais (Informatique / Comptabilité / Gestion)",
+        exPorHis: "Portugais + Histoire (Droit / Secrétariat / Lettres)",
+        btnBack1: "Retour",
+        btnNext2: "Étape suivante",
+        instLabelTitle: "Institutions publiques disponibles dans la province sélectionnée",
+        lblUnits: "Facultés / Unités de cette université (avec cours de votre domaine)",
+        noteFallback: "Nous n'avons pas encore de données pour ce domaine dans votre province. Universités publiques d'autres provinces affichées.",
+        lblCoursesWord: "Cours",
+        lblExamsWord: "Examens d'admission",
+        alertUnit: "Veuillez choisir une faculté / unité.",
+        btnBack2: "Retour",
+        btnPay: "Aller au paiement",
+        payTitle: "Frais du cabinet d'orientation",
+        payMethod: "Sélectionnez une option de mode de paiement :",
+        payBtn: "🔒 Effectuer le paiement de 128 MT sur PaySuite",
+        btnTest: "⚡ Paiement déjà effectué / Continuer (Mode Test)",
+        btnBack3: "Retour",
+        welAtt: "Consultation pour",
+        welProv: "Province",
+        welLvlLbl: "Niveau",
+        welExams: "Domaine",
+        welInst: "Institution locale",
+        lblGlobal: "🔍 Recherche globale de cours publics au Mozambique :",
+        lblOpt1: "⭐ COURS COMPATIBLES DE L'INSTITUTION (1ÈRE OPTION)",
+        lblOpt2: "🛡️ COURS STRATÉGIQUES ALTERNATIFS (2E OPTION)",
+        btnView1: "👁️ Voir les détails de la 1ère option",
+        btnView2: "👁️ Voir les détails de la 2e option",
+        lblDaily: "Photos illustratives du métier sur le terrain :",
+        secDur: "Durée & Régime académique",
+        secExams: "Conditions officielles d'admission",
+        secDesc: "Ce qu'on étudie & Ce que fait le professionnel",
+        secWork: "💼 Où vous pouvez travailler au Mozambique",
+        linksTitle: "Liens utiles pour la préparation et les bourses :",
+        linkScholar: "🎓 Portail du Ministère de l'Enseignement supérieur (MCTES)",
+        linkMoz: "📚 Télécharger les examens résolus en PDF (MozEstuda)",
+        linkEdu: "📖 Bibliothèque d'examens résolus (EduSkills)",
+        btnConfirm: "Confirmer le choix et émettre la fiche d'orientation",
+        btnNewConsult: "Faire une nouvelle consultation",
+        certHead: "FICHE D'ORIENTATION VOCATIONNELLE ET ACADÉMIQUE",
+        certDesc: "Il est certifié que le candidat a défini son plan d'examens d'admission et concourt pour :",
+        cName: "Nom de l'étudiant :",
+        cProv: "Province :",
+        cLevel: "Niveau d'études :",
+        cInst: "Institution locale :",
+        cOpt1: "1ère option :",
+        cOpt2: "2e option (Stratégique) :",
+        cParecer: "Avis de préparation : Le candidat remplit les conditions d'éligibilité pour la voie publique sélectionnée.",
+        cSeal: "Sceau de<br>validation<br>numérique",
+        btnPrint: "🖨 Imprimer / Sauvegarder la fiche en PDF",
+        btnNewOrient: "Faire une nouvelle orientation"
+      }
+    };
+
+    function changeLanguage(lang) {
+      const t = translations[lang] || translations.pt;
+      document.getElementById('t-title').innerText = t.title;
+      document.getElementById('t-subtitle').innerText = t.subtitle;
+      document.getElementById('t-lbl-name').innerText = t.lblName;
+      document.getElementById('t-lbl-prov').innerText = t.lblProv;
+      document.getElementById('t-btn-next1').innerText = t.btnNext1;
+      document.getElementById('userName').placeholder = t.placeholderName;
+      
+      document.getElementById('t-lbl-level').innerText = t.lblLevel;
+      document.getElementById('t-lvl-12').innerText = t.lvl12;
+      document.getElementById('t-lvl-10').innerText = t.lvl10;
+
+      document.getElementById('t-lbl-exams-group').innerText = t.lblExamsGroup;
+      document.getElementById('t-ex-mat-fis').innerText = t.exMatFis;
+      document.getElementById('t-ex-bio-qui').innerText = t.exBioQui;
+      document.getElementById('t-ex-mat-por').innerText = t.exMatPor;
+      document.getElementById('t-ex-por-his').innerText = t.exPorHis;
+
+      document.getElementById('t-btn-back1').innerText = t.btnBack1;
+      document.getElementById('t-btn-next2').innerText = t.btnNext2;
+      
+      document.getElementById('instLabelTitle').innerText = t.instLabelTitle;
+      document.getElementById('t-lbl-units').innerText = t.lblUnits;
+      document.getElementById('t-btn-back2').innerText = t.btnBack2;
+      document.getElementById('t-btn-pay').innerText = t.btnPay;
+      
+      document.getElementById('t-pay-title').innerText = t.payTitle;
+      document.getElementById('t-pay-method').innerText = t.payMethod;
+      document.getElementById('t-pay-btn').innerText = t.payBtn;
+      document.getElementById('btnModoTeste').innerText = t.btnTest;
+      document.getElementById('t-btn-back3').innerText = t.btnBack3;
+      
+      document.getElementById('t-wel-att').innerText = t.welAtt;
+      document.getElementById('t-wel-prov').innerText = t.welProv;
+      document.getElementById('t-wel-lvl-lbl').innerText = t.welLvlLbl;
+      document.getElementById('t-wel-inst').innerText = t.welInst;
+      document.getElementById('t-lbl-global').innerText = t.lblGlobal;
+      document.getElementById('t-lbl-opt1').innerText = t.lblOpt1;
+      document.getElementById('t-lbl-opt2').innerText = t.lblOpt2;
+      
+      document.getElementById('btnView1').innerText = t.btnView1;
+      document.getElementById('btnView2').innerText = t.btnView2;
+      document.getElementById('t-lbl-daily').innerText = t.lblDaily;
+      document.getElementById('t-sec-dur').innerText = t.secDur;
+      document.getElementById('t-sec-exams').innerText = t.secExams;
+      document.getElementById('t-sec-desc').innerText = t.secDesc;
+      document.getElementById('t-sec-work').innerText = t.secWork;
+      document.getElementById('t-links-title').innerText = t.linksTitle;
+      document.getElementById('t-link-scholar').innerText = t.linkScholar;
+      document.getElementById('t-link-moz').innerText = t.linkMoz;
+      document.getElementById('t-link-edu').innerText = t.linkEdu;
+      document.getElementById('t-btn-confirm').innerText = t.btnConfirm;
+      document.getElementById('t-btn-new-consult').innerText = t.btnNewConsult;
+
+      document.getElementById('t-cert-head').innerText = t.certHead;
+      document.getElementById('t-cert-desc').innerText = t.certDesc;
+      document.getElementById('t-c-name').innerText = t.cName;
+      document.getElementById('t-c-prov').innerText = t.cProv;
+      document.getElementById('t-c-level').innerText = t.cLevel;
+      document.getElementById('t-c-inst').innerText = t.cInst;
+      document.getElementById('t-c-opt1').innerText = t.cOpt1;
+      document.getElementById('t-c-opt2').innerText = t.cOpt2;
+      document.getElementById('t-c-parecer').innerHTML = `<strong>${t.cParecer.split(':')[0]}:</strong>${t.cParecer.split(':')[1]}`;
+      document.getElementById('t-c-seal').innerHTML = t.cSeal;
+      document.getElementById('t-btn-print').innerText = t.btnPrint;
+      document.getElementById('t-btn-new-orient').innerText = t.btnNewOrient;
+
+      formData.lang = lang;
+      savePersistedData();
+    }
+
+    const DEFAULT_FORM = {
+      name: '',
+      province: 'Maputo Cidade',
+      level: '12ª Classe / Pré-Universitário (Acesso a Universidades)',
+      examSubjects: 'Matemática e Física',
+      university: '',
+      unit: '',
+      firstCourseKey: '',
+      secondCourseKey: '',
+      currentDetailView: 1,
+      refCode: '',
+      lang: 'pt'
+    };
+
+    function loadPersistedData() {
+      try {
+        const data = localStorage.getItem(STORAGE_KEY);
+        return data ? JSON.parse(data) : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function savePersistedData() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+      } catch (e) {}
+    }
+
+    let formData = Object.assign({}, DEFAULT_FORM, loadPersistedData());
+
+    function selectProvince(provinceName, element) {
+      document.querySelectorAll('#provinceOptions .option-card').forEach(c => c.classList.remove('selected'));
+      element.classList.add('selected');
+      formData.province = provinceName;
+      savePersistedData();
+    }
+
+    function selectLevelCard(element, levelValue) {
+      document.querySelectorAll('#levelOptions .option-card').forEach(c => c.classList.remove('selected'));
+      element.classList.add('selected');
+      formData.level = levelValue;
+      savePersistedData();
+    }
+
+    function selectCard(containerId, element, value) {
+      if (!element) return;
+      const cards = document.querySelectorAll(`#${containerId} .option-card`);
+      cards.forEach(c => c.classList.remove('selected'));
+      element.classList.add('selected');
+
+      if (containerId === 'universityOptions') formData.university = value;
+      savePersistedData();
+    }
+
+    function selectExamSubject(element, subjectName) {
+      document.querySelectorAll('#examSubjectOptions .option-card').forEach(c => c.classList.remove('selected'));
+      element.classList.add('selected');
+      formData.examSubjects = subjectName;
+      savePersistedData();
+    }
+
+    function selectFirstCourse(element, key) {
+      if (!element) return;
+      const cards = document.querySelectorAll('#firstCourseOptions .option-card');
+      cards.forEach(c => c.classList.remove('selected'));
+      element.classList.add('selected');
+      formData.firstCourseKey = key;
+      savePersistedData();
+      switchDetailView(1);
+    }
+
+    function selectSecondCourse(element, key) {
+      if (!element) return;
+      const cards = document.querySelectorAll('#secondCourseOptions .option-card');
+      cards.forEach(c => c.classList.remove('selected-second'));
+      element.classList.add('selected-second');
+      formData.secondCourseKey = key;
+      savePersistedData();
+      switchDetailView(2);
+    }
+
+    function switchDetailView(optionNum) {
+      formData.currentDetailView = optionNum;
+      savePersistedData();
+      const btn1 = document.getElementById('btnView1');
+      const btn2 = document.getElementById('btnView2');
+
+      if (btn1 && btn2) {
+        if (optionNum === 1) {
+          btn1.className = "btn-toggle-view active-1";
+          btn2.className = "btn-toggle-view";
+        } else {
+          btn1.className = "btn-toggle-view";
+          btn2.className = "btn-toggle-view active-2";
+        }
+      }
+
+      renderCourseDetails();
+    }
+
+    // LISTAGEM DE INSTITUIÇÕES — usada só para a 10ª Classe (ensino técnico). A 12ª usa o catálogo abaixo.
+    function getPublicInstitutionsByProvinceAndLevel(province, level, exams) {
+      const is10th = level.includes('10ª Classe') || level.includes('10th') || level.includes('10e');
+
+      if (province.includes('Maputo Cidade')) {
+        if (is10th) {
+          return [
+            'Instituto Industrial de Maputo (IIM) — Técnico Público',
+            'Instituto Comercial de Maputo (ICM) — Técnico Público',
+            'Escola Técnica de Machava — Técnico Público'
+          ];
+        } else {
+          return [
+            'UEM - FENG (Faculdade de Engenharia - Maputo)',
+            'UEM - Faculdade de Medicina (Maputo)',
+            'UEM - Faculdade de Ciências (Maputo)',
+            'UEM - Faculdade de Economia e Gestão (FEG)',
+            'UEM - Faculdade de Direito (Maputo)',
+            'UEM - DMI (Matemática e Informática)',
+            'UP-Maputo (Universidade Públ. Pedagógica - Maputo)',
+            'ISRI (Instituto Superior de Relações Internacionais)'
+          ];
+        }
+      }
+
+      if (province.includes('Maputo Província')) {
+        if (is10th) {
+          return [
+            'Instituto Politécnico da Matola — Técnico Público',
+            'Escola Técnico-Profissional de Boane'
+          ];
+        } else {
+          return [
+            'UEM - Campus Universitário principal (Faculdade de Agronomia e Engenharia Florestal - Boane/Liz)',
+            'UP-Maputo - Delegação da Matola',
+            'Universidade Lúrio - Polo Sul (Matola)'
+          ];
+        }
+      }
+
+      if (province.includes('Gaza')) {
+        if (is10th) {
+          return [
+            'Instituto Industrial e Comercial de Xai-Xai — Técnico Público',
+            'Instituto Politécnico de Chokwe'
+          ];
+        } else {
+          return [
+            'UEM - ESCAG (Escola Superior de Ciências Agrárias de Gaza - Chokwe)',
+            'Universidade Licungo - Extensão de Gaza',
+            'ISCED - Polo Regional de Gaza'
+          ];
+        }
+      }
+
+      if (province.includes('Inhambane')) {
+        if (is10th) {
+          return ['Instituto Industrial e Comercial de Inhambane — Técnico Público'];
+        } else {
+          return [
+            'UEM - EHT (Escola Superior de Hotelaria e Turismo de Maxixe / Inhambane)',
+            'Universidade Públ. Licungo - Extensão de Inhambane',
+            'ISP - Instituto Superior Politécnico de Inhambane'
+          ];
+        }
+      }
+
+      if (province.includes('Sofala')) {
+        if (is10th) {
+          return [
+            'Instituto Industrial e Comercial da Beira (IICB) — Técnico Público',
+            'Instituto Politécnico da Beira'
+          ];
+        } else {
+          return [
+            'UniZambeze - Faculdade de Ciências e Tecnologia (Beira)',
+            'UniZambeze - Faculdade de Ciências de Saúde (Beira)',
+            'UniZambeze - Faculdade de Engenharia Agronómica e Forestal',
+            'Universidade Licungo - Extensão da Beira'
+          ];
+        }
+      }
+
+      if (province.includes('Manica')) {
+        if (is10th) {
+          return ['Instituto Industrial e Comercial de Chimoio — Técnico Público'];
+        } else {
+          return [
+            'ISPM - Instituto Superior Politécnico de Manica (Chimoio)',
+            'Universidade Licungo - Extensão de Chimoio'
+          ];
+        }
+      }
+
+      if (province.includes('Tete')) {
+        if (is10th) {
+          return ['Instituto Industrial e Comercial de Tete — Técnico Público'];
+        } else {
+          return [
+            'UniZambeze - Faculdade de Engenharia Ambiental e Mineral (Tete)',
+            'UniZambeze - Faculdade de Ciências Sociais'
+          ];
+        }
+      }
+
+      if (province.includes('Zambézia')) {
+        if (is10th) {
+          return [
+            'Instituto Industrial e Comercial de Quelimane — Técnico Público',
+            'Instituto Politécnico de Mocuba'
+          ];
+        } else {
+          return [
+            'Universidade Licungo - Sede (Quelimane)',
+            'UniZambeze - Extensão de Quelimane',
+            'UniZambeze - Faculdade de Ciências Agrárias (Mocuba)'
+          ];
+        }
+      }
+
+      if (province.includes('Nampula')) {
+        if (is10th) {
+          return [
+            'Instituto Industrial e Comercial de Nampula — Técnico Público',
+            'Instituto Politécnico de Nacala'
+          ];
+        } else {
+          return [
+            'UniLúrio - Faculdade de Engenharia (Nampula)',
+            'UniLúrio - Faculdade de Ciências de Saúde (Nampula)',
+            'UniLúrio - Faculdade de Ciências Agrárias (Lichinga/Nampula)',
+            'UEM - Faculdade de Medicina (Extensão Nampula)'
+          ];
+        }
+      }
+
+      if (province.includes('Niassa')) {
+        if (is10th) {
+          return ['Instituto Industrial e Comercial de Lichinga — Técnico Público'];
+        } else {
+          return [
+            'UniLúrio - Faculdade de Arquitetura e Planeamento Físico (Lichinga)',
+            'Universidade Rovuma - Delegação de Lichinga'
+          ];
+        }
+      }
+
+      if (province.includes('Cabo Delgado')) {
+        if (is10th) {
+          return ['Instituto Industrial e Comercial de Pemba — Técnico Público'];
+        } else {
+          return [
+            'UniLúrio - Faculdade de Engenharia e Ciências Exatas (Pemba)',
+            'UniLúrio - Faculdade de Ciências Naturais e Exatas',
+            'Universidade Rovuma - Delegação de Pemba'
+          ];
+        }
+      }
+
+      return [`Universidade Pública / Extensão Regional em ${province}`];
+    }
+
+    const coursesByLevelAndExam = {
+      '10ª Classe': {
+        opt1: [
+          { 
+            key: 'tec_eletricidade', 
+            rawTitle: "Técnico de Eletricidade Industrial (Nível Médio)", 
+            duration: "3 Anos", 
+            exams: "Concurso de Admissão da 10ª Classe (Matemática e Física)", 
+            desc: "Instalação, reparação e manutenção de quadros elétricos industriais, redes de distribuição de energia e comandos elétricos.", 
+            workplace: "EDM, fábricas industriais, oficinas de manutenção elétrica e construção civil na província.",
+            imgMain: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=900&q=80", 
+            imgSub1: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&q=80", 
+            imgSub2: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=600&q=80" 
+          },
+          { 
+            key: 'tec_contabilidade', 
+            rawTitle: "Técnico de Contabilidade e Gestão (Nível Médio)", 
+            duration: "3 Anos", 
+            exams: "Concurso de Admissão da 10ª Classe (Matemática e Português)", 
+            desc: "Processamento de salários, lançamentos contabilísticos, arquivo de documentos fiscais e apoio à tesouraria.", 
+            workplace: "Empresas comerciais locais, repartições públicas, bancos e gabinetes de contabilidade.",
+            imgMain: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=900&q=80", 
+            imgSub1: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80", 
+            imgSub2: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80" 
+          }
+        ],
+        opt2: [
+          { 
+            key: 'tec_mecanica', 
+            rawTitle: "Técnico de Mecânica / Ajustagem (Nível Médio)", 
+            duration: "3 Anos", 
+            exams: "Concurso de Admissão da 10ª Classe (Matemática e Física)", 
+            desc: "Usinagem, soldadura, manutenção preventiva de motores e equipamentos mecânicos industriais.", 
+            workplace: "Oficinas mecânicas locais, portos, indústrias e empresas de transporte.",
+            imgMain: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=900&q=80", 
+            imgSub1: "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=600&q=80", 
+            imgSub2: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80" 
+          }
+        ]
+      },
+      '12ª Classe': {
+        'Matemática e Física': {
+          opt1: [
+            { key: 'eng_civil', rawTitle: "Licenciatura em Engenharia Civil", duration: "5 Anos", exams: "Matemática I + Física I", desc: "Projeta, dimensiona e fiscaliza edifícios, estradas e pontes.", workplace: "Construtoras civis, Ministério das Obras Públicas e Municípios locais.", imgMain: "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=900&q=80", imgSub1: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=600&q=80", imgSub2: "https://images.unsplash.com/photo-1581094288338-2314dddb7ece?auto=format&fit=crop&w=600&q=80" },
+            { key: 'eng_inf', rawTitle: "Licenciatura em Engenharia Informática", duration: "4.5 Anos", exams: "Matemática I + Física I", desc: "Arquitetura de sistemas e redes de computadores de grande porte.", workplace: "Telecomunicações, bancos e consultoras de TI.", imgMain: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=900&q=80", imgSub1: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=600&q=80", imgSub2: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80" }
+          ],
+          opt2: [
+            { key: 'fisica', rawTitle: "Licenciatura em Física", duration: "4 Anos", exams: "Matemática I + Física I", desc: "Estudo das leis da natureza, da mecânica à física moderna, com laboratório e modelação.", workplace: "Ensino superior, investigação, energia, meteorologia e telecomunicações.", imgMain: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=900&q=80", imgSub1: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&q=80", imgSub2: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=600&q=80" },
+            { key: 'geologia', rawTitle: "Licenciatura em Geologia", duration: "4 Anos", exams: "Matemática I + Física I", desc: "Estudo da terra, minerais, águas subterrâneas e recursos naturais.", workplace: "Mineração, hidrocarbonetos, geologia mineira, ministérios e consultoras.", imgMain: "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=900&q=80", imgSub1: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=600&q=80", imgSub2: "https://images.unsplash.com/photo-1581094288338-2314dddb7ece?auto=format&fit=crop&w=600&q=80" },
+            { key: 'arquitectura', rawTitle: "Licenciatura em Arquitectura e Planeamento Físico", duration: "5 Anos", exams: "Matemática I + Física I", desc: "Projeto de edifícios, cidades e espaços públicos.", workplace: "Gabinetes de arquitectura, municípios, construtoras e ministérios.", imgMain: "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=900&q=80", imgSub1: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=600&q=80", imgSub2: "https://images.unsplash.com/photo-1581094288338-2314dddb7ece?auto=format&fit=crop&w=600&q=80" },
+            { key: 'eng_eletrica', rawTitle: "Licenciatura em Engenharia Elétrica", duration: "4.5 Anos", exams: "Matemática I + Física I", desc: "Sistemas de potência e energia elétrica.", workplace: "EDM, HCB e indústrias pesadas.", imgMain: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=900&q=80", imgSub1: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&q=80", imgSub2: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=600&q=80" },
+            { key: 'eng_eletronica', rawTitle: "Licenciatura em Engenharia Eletrónica", duration: "5 Anos", exams: "Matemática I + Física I", desc: "Circuitos eletrónicos, telecomunicações, automação e sistemas de controlo.", workplace: "Operadoras móveis, telecomunicações, indústria e empresas de automação.", imgMain: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=900&q=80", imgSub1: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&q=80", imgSub2: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80" },
+            { key: 'eng_mecanica', rawTitle: "Licenciatura em Engenharia Mecânica", duration: "5 Anos", exams: "Matemática I + Física I", desc: "Projeto, fabrico e manutenção de máquinas, motores e sistemas térmicos.", workplace: "Indústrias, portos, mineração e empresas de transporte e energia.", imgMain: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=900&q=80", imgSub1: "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=600&q=80", imgSub2: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80" },
+            { key: 'eng_quimica', rawTitle: "Licenciatura em Engenharia Química", duration: "5 Anos", exams: "Matemática I + Física I", desc: "Processos industriais químicos, tratamento de águas, alimentos e energia.", workplace: "Indústria alimentar, cimento, energia, gás e empresas de tratamento de água.", imgMain: "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=900&q=80", imgSub1: "https://images.unsplash.com/photo-1581094288338-2314dddb7ece?auto=format&fit=crop&w=600&q=80", imgSub2: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80" },
+            { key: 'eng_ambiente', rawTitle: "Licenciatura em Engenharia do Ambiente", duration: "5 Anos", exams: "Matemática I + Física I", desc: "Gestão de recursos hídricos, resíduos, poluição e impacto ambiental.", workplace: "Ministérios, municípios, consultoras ambientais, ONGs e indústria extrativa.", imgMain: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=900&q=80", imgSub1: "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=600&q=80", imgSub2: "https://images.unsplash.com/photo-1581094288338-2314dddb7ece?auto=format&fit=crop&w=600&q=80" }
+          ]
+        },
+        'Biologia e Química': {
+          opt1: [
+            { key: 'medicina', rawTitle: "Licenciatura em Medicina Geral", duration: "6 Anos", exams: "Biologia I + Química I", desc: "Diagnóstico, tratamento e cirurgias em unidades hospitalares.", workplace: "Hospitais centrais, provinciais e clínicas privadas.", imgMain: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=900&q=80", imgSub1: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=600&q=80", imgSub2: "https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&w=600&q=80" }
+          ],
+          opt2: [
+            { key: 'biologia', rawTitle: "Licenciatura em Biologia", duration: "4 Anos", exams: "Biologia I + Química I", desc: "Estudo dos seres vivos, ecologia, genética e conservação.", workplace: "Áreas de conservação, laboratórios, ensino e ONGs ambientais.", imgMain: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=900&q=80", imgSub1: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=600&q=80", imgSub2: "https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&w=600&q=80" },
+            { key: 'quimica', rawTitle: "Licenciatura em Química", duration: "4 Anos", exams: "Biologia I + Química I", desc: "Química orgânica, analítica e industrial aplicada.", workplace: "Laboratórios, indústria, controlo de qualidade e ensino.", imgMain: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=900&q=80", imgSub1: "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=600&q=80", imgSub2: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80" },
+            { key: 'veterinaria', rawTitle: "Licenciatura em Medicina Veterinária", duration: "5 Anos", exams: "Biologia I + Química I", desc: "Saúde e tratamento de animais e controlo de doenças animais.", workplace: "Clínicas veterinárias, pecuária, Ministério da Agricultura e matadouros.", imgMain: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=900&q=80", imgSub1: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=600&q=80", imgSub2: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=600&q=80" },
+            { key: 'agronomia', rawTitle: "Licenciatura em Engenharia Agronómica", duration: "5 Anos", exams: "Biologia I + Química I", desc: "Produção agrícola, solos, culturas e gestão de explorações agrárias.", workplace: "Empresas agrícolas, extensão rural, ONGs e agro-indústria.", imgMain: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=900&q=80", imgSub1: "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=600&q=80", imgSub2: "https://images.unsplash.com/photo-1581094288338-2314dddb7ece?auto=format&fit=crop&w=600&q=80" },
+            { key: 'florestal', rawTitle: "Licenciatura em Engenharia Florestal", duration: "5 Anos", exams: "Biologia I + Química I", desc: "Gestão de florestas, madeira e conservação da biodiversidade.", workplace: "Serviços florestais, empresas de madeira, ONGs e áreas de conservação.", imgMain: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=900&q=80", imgSub1: "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=600&q=80", imgSub2: "https://images.unsplash.com/photo-1581094288338-2314dddb7ece?auto=format&fit=crop&w=600&q=80" },
+            { key: 'enfermagem', rawTitle: "Licenciatura em Enfermagem Superior", duration: "4 Anos", exams: "Biologia I + Química I", desc: "Cuidados avançados de saúde e saúde pública.", workplace: "Centros de saúde e ONGs de saúde.", imgMain: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=900&q=80", imgSub1: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=600&q=80", imgSub2: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=600&q=80" }
+          ]
+        },
+        'Matemática e Português': {
+          opt1: [
+            { key: 'dmi_inf', rawTitle: "Licenciatura em Informática (DMI)", duration: "4 Anos", exams: "Matemática I + Português I", desc: "Desenvolvimento de software e gestão de bases de dados.", workplace: "Software houses, bancos e operadoras móveis.", imgMain: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=900&q=80", imgSub1: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80", imgSub2: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=80" }
+          ],
+          opt2: [
+            { key: 'dmi_mat', rawTitle: "Licenciatura em Matemática (DMI)", duration: "4 Anos", exams: "Matemática I + Português I", desc: "Álgebra, análise, geometria e modelação matemática.", workplace: "Ensino, bancos, seguradoras e institutos de pesquisa.", imgMain: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=80", imgSub1: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80", imgSub2: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" },
+            { key: 'economia', rawTitle: "Licenciatura em Economia", duration: "4 Anos", exams: "Matemática I + Português I", desc: "Análise de mercados, finanças públicas e desenvolvimento económico.", workplace: "Banco de Moçambique, ministérios, bancos e consultoras.", imgMain: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=900&q=80", imgSub1: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80", imgSub2: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80" },
+            { key: 'gestao', rawTitle: "Licenciatura em Gestão", duration: "4 Anos", exams: "Matemática I + Português I", desc: "Administração de empresas, recursos humanos e estratégia.", workplace: "Empresas, bancos, ONGs e administração pública.", imgMain: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=900&q=80", imgSub1: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80", imgSub2: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80" },
+            { key: 'contabilidade', rawTitle: "Licenciatura em Contabilidade e Auditoria", duration: "4 Anos", exams: "Matemática I + Português I", desc: "Contabilidade, fiscalidade e auditoria de empresas.", workplace: "Empresas de auditoria, bancos, Autoridade Tributária e gabinetes de contabilidade.", imgMain: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=900&q=80", imgSub1: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80", imgSub2: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80" },
+            { key: 'dmi_estat', rawTitle: "Licenciatura em Estatística (DMI)", duration: "4 Anos", exams: "Matemática I + Português I", desc: "Tratamento e análise estatística de dados populacionais.", workplace: "INE, Banco de Moçambique e institutos de pesquisa.", imgMain: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=80", imgSub1: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80", imgSub2: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" }
+          ]
+        },
+        'Português e História': {
+          opt1: [
+            { key: 'direito', rawTitle: "Licenciatura em Direito", duration: "4 Anos", exams: "Português I + História I", desc: "Estudo da legislação e defesa legal em tribunais.", workplace: "Tribunais judiciais e gabinetes de advocacia.", imgMain: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=900&q=80", imgSub1: "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=600&q=80", imgSub2: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=600&q=80" }
+          ],
+          opt2: [
+            { key: 'historia', rawTitle: "Licenciatura em História", duration: "4 Anos", exams: "Português I + História I", desc: "Estudo da história de Moçambique, África e do mundo.", workplace: "Ensino, museus, arquivos, investigação e administração pública.", imgMain: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=900&q=80", imgSub1: "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=600&q=80", imgSub2: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=600&q=80" },
+            { key: 'geografia', rawTitle: "Licenciatura em Geografia", duration: "4 Anos", exams: "Português I + História I", desc: "Território, população, ambiente e planeamento do espaço.", workplace: "Ensino, municípios, cartografia, ministérios e ONGs.", imgMain: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=80", imgSub1: "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=600&q=80", imgSub2: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80" },
+            { key: 'sociologia', rawTitle: "Licenciatura em Sociologia", duration: "4 Anos", exams: "Português I + História I", desc: "Estudo da sociedade, famílias, trabalho e mudança social.", workplace: "ONGs, investigação, administração pública e desenvolvimento comunitário.", imgMain: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=80", imgSub1: "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=600&q=80", imgSub2: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80" },
+            { key: 'psicologia', rawTitle: "Licenciatura em Psicologia", duration: "4 Anos", exams: "Português I + História I", desc: "Acompanhamento psicológico e saúde mental.", workplace: "Hospitais, escolas e gabinetes de recursos humanos.", imgMain: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=80", imgSub1: "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=600&q=80", imgSub2: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80" }
+          ]
+        }
+      }
+    };
+
+    // ============================================================
+    // NOVO: CATÁLOGO UNIVERSIDADE → FACULDADE/UNIDADE → CURSOS
+    // Cada curso só aparece dentro da faculdade a que pertence.
+    //  pkg    = pacote de exames da faculdade
+    //  courses = cursos 1ª opção (chaves de coursesByLevelAndExam)
+    //  alt     = cursos 2ª opção (alternativos)
+    //  short   = nome curto que aparece ao lado do curso
+    // Para acrescentar uma faculdade/curso: basta copiar um bloco abaixo.
+    // ============================================================
+    const UNIVERSITY_CATALOG = [
+      {
+        name: 'Universidade Eduardo Mondlane (UEM)',
+        provinces: ['Maputo Cidade', 'Maputo Província'],
+        units: [
+          { name: 'Faculdade de Engenharia (FENG)', short: 'UEM - FENG', pkg: 'Matemática e Física', courses: ['eng_civil', 'eng_eletrica', 'eng_eletronica', 'eng_mecanica', 'eng_quimica', 'eng_inf', 'eng_ambiente'], alt: [] },
+          { name: 'Departamento de Matemática e Informática (DMI)', short: 'UEM - DMI', pkg: 'Matemática e Português', courses: ['dmi_inf', 'dmi_estat', 'dmi_mat'], alt: [] },
+          { name: 'Faculdade de Medicina', short: 'UEM - Medicina', pkg: 'Biologia e Química', courses: ['medicina', 'enfermagem'], alt: [] },
+          { name: 'Faculdade de Direito', short: 'UEM - Direito', pkg: 'Português e História', courses: ['direito'], alt: [] },
+          { name: 'Faculdade de Educação', short: 'UEM - Educação', pkg: 'Português e História', courses: ['psicologia'], alt: [] },
+          { name: 'Faculdade de Letras e Ciências Sociais', short: 'UEM - Letras e Ciências Sociais', pkg: 'Português e História', courses: ['historia', 'geografia', 'sociologia'], alt: [] },
+          { name: 'Faculdade de Economia', short: 'UEM - Economia', pkg: 'Matemática e Português', courses: ['economia', 'gestao', 'contabilidade'], alt: [] },
+          { name: 'Faculdade de Ciências (Física, Geologia)', short: 'UEM - Ciências', pkg: 'Matemática e Física', courses: ['fisica', 'geologia'], alt: [] },
+          { name: 'Faculdade de Arquitectura e Planeamento Físico', short: 'UEM - Arquitectura', pkg: 'Matemática e Física', courses: ['arquitectura'], alt: [] },
+          { name: 'Faculdade de Ciências (Biologia, Química)', short: 'UEM - Ciências', pkg: 'Biologia e Química', courses: ['biologia', 'quimica'], alt: [] },
+          { name: 'Faculdade de Veterinária', short: 'UEM - Veterinária', pkg: 'Biologia e Química', courses: ['veterinaria'], alt: [] },
+          { name: 'Faculdade de Agronomia e Engenharia Florestal', short: 'UEM - Agronomia e Eng. Florestal', pkg: 'Biologia e Química', courses: ['agronomia', 'florestal'], alt: [] }
+        ]
+      },
+      {
+        name: 'Universidade Lúrio (UniLúrio)',
+        provinces: ['Nampula', 'Niassa', 'Cabo Delgado'],
+        units: [
+          { name: 'Faculdade de Engenharia', short: 'UniLúrio - Engenharia', pkg: 'Matemática e Física', courses: ['eng_civil', 'eng_eletrica'], alt: [] },
+          { name: 'Faculdade de Ciências de Saúde', short: 'UniLúrio - Saúde', pkg: 'Biologia e Química', courses: ['medicina', 'enfermagem'], alt: [] },
+          { name: 'Faculdade de Ciências Agrárias', short: 'UniLúrio - Agrárias', pkg: 'Biologia e Química', courses: ['agronomia'], alt: [] }
+        ]
+      },
+      {
+        name: 'Universidade Zambeze (UniZambeze)',
+        provinces: ['Sofala', 'Tete', 'Zambézia'],
+        units: [
+          { name: 'Faculdade de Ciências e Tecnologia', short: 'UniZambeze - FCT', pkg: 'Matemática e Física', courses: ['eng_inf', 'eng_eletrica'], alt: [] },
+          { name: 'Faculdade de Engenharia Ambiental e Mineral', short: 'UniZambeze - Eng. Ambiental e Mineral', pkg: 'Matemática e Física', courses: ['eng_civil', 'eng_eletrica'], alt: [] },
+          { name: 'Faculdade de Ciências de Saúde', short: 'UniZambeze - Saúde', pkg: 'Biologia e Química', courses: ['medicina', 'enfermagem'], alt: [] },
+          { name: 'Faculdade de Ciências Agrárias', short: 'UniZambeze - Agrárias', pkg: 'Biologia e Química', courses: ['agronomia'], alt: [] }
+        ]
+      }
+    ];
+
+    function isTenth() {
+      const l = formData.level || '';
+      return l.includes('10ª Classe') || l.includes('10th') || l.includes('10e');
+    }
+
+    function getCourseIndex() {
+      const idx = {};
+      const lv12 = coursesByLevelAndExam['12ª Classe'];
+      Object.keys(lv12).forEach(pkg => {
+        [...lv12[pkg].opt1, ...lv12[pkg].opt2].forEach(c => { idx[c.key] = c; });
+      });
+      return idx;
+    }
+
+    function getSelectedUni() {
+      return UNIVERSITY_CATALOG.find(u => u.name === formData.university) || null;
+    }
+
+    function getSelectedUnit() {
+      const uni = getSelectedUni();
+      if (!uni) return null;
+      return uni.units.find(u => u.name === formData.unit && u.pkg === formData.examSubjects) || null;
+    }
+
+    // Devolve as listas de 1ª e 2ª opção (10ª Classe = técnico; 12ª = cursos DA faculdade escolhida)
+    function getCourseLists() {
+      if (isTenth()) {
+        return { opt1: coursesByLevelAndExam['10ª Classe'].opt1, opt2: coursesByLevelAndExam['10ª Classe'].opt2 };
+      }
+      const unit = getSelectedUnit();
+      if (unit) {
+        const idx = getCourseIndex();
+        return {
+          opt1: unit.courses.map(k => idx[k]).filter(Boolean),
+          opt2: [...unit.courses, ...unit.alt.filter(k => !unit.courses.includes(k))].map(k => idx[k]).filter(Boolean)
+        };
+      }
+      const levelData = coursesByLevelAndExam['12ª Classe'][formData.examSubjects] || coursesByLevelAndExam['12ª Classe']['Matemática e Física'];
+      return { opt1: levelData.opt1, opt2: levelData.opt2 };
+    }
+
+    // Nome curto da faculdade a que o curso pertence (ex.: "UEM - FENG")
+    function courseShort(key) {
+      if (isTenth()) return getShortUniCode(formData.university);
+      const uni = getSelectedUni();
+      if (uni) {
+        const u = uni.units.find(x => x.courses.includes(key)) || uni.units.find(x => x.alt.includes(key));
+        if (u) return u.short;
+      }
+      return getShortUniCode(formData.university);
+    }
+
+    function institutionLabel() {
+      const unit = getSelectedUnit();
+      if (!isTenth() && unit) return `${formData.university} › ${unit.name}`;
+      return formData.university;
+    }
+
+    const globalMasterCatalog = [
+      { name: "Licenciatura em Engenharia Civil", faculty: "UEM / UniLúrio / UniZambeze", exams: "Matemática e Física" },
+      { name: "Licenciatura em Medicina Geral", faculty: "UEM / UniLúrio", exams: "Biologia e Química" },
+      { name: "Licenciatura em Informática (DMI)", faculty: "UEM - DMI", exams: "Matemática e Português" },
+      { name: "Licenciatura em Direito", faculty: "UEM / UP", exams: "Português e História" },
+      { name: "Técnico de Eletricidade Industrial", faculty: "Instituto Industrial de Maputo (IIM) / Beira (IICB)", exams: "10ª Classe" }
+    ];
+
+    function filterGlobalCourses(query) {
+      const container = document.getElementById('globalSearchResults');
+      if (!container) return;
+      container.innerHTML = '';
+      if (!query || query.trim() === '') return;
+
+      const q = query.toLowerCase();
+      const matches = globalMasterCatalog.filter(c => c.name.toLowerCase().includes(q) || c.faculty.toLowerCase().includes(q));
+
+      if (matches.length === 0) {
+        container.innerHTML = `<div style="font-size:11px; color:#94a3b8; padding:6px;">Nenhum curso encontrado no diretório oficial para "${query}".</div>`;
+        return;
+      }
+
+      matches.forEach(m => {
+        const item = document.createElement('div');
+        item.style.cssText = "background:#111c33; border:1px solid #283956; padding:6px 10px; border-radius:6px; margin-bottom:4px; font-size:11px;";
+        item.innerHTML = `<strong>${m.name}</strong><br><span style="color:#38bdf8;">Instituição:</span> ${m.faculty} | <span style="color:#34d399;">Requisito:</span> ${m.exams}`;
+        container.appendChild(item);
+      });
+    }
+
+    function renderInstitutions() {
+      const container = document.getElementById('universityOptions');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const t = translations[formData.lang] || translations.pt;
+      const note = document.getElementById('instNote');
+      if (note) { note.classList.add('hidden'); note.innerText = ''; }
+
+      const prov = formData.province || 'Maputo Cidade';
+      let instList;
+
+      if (isTenth()) {
+        instList = getPublicInstitutionsByProvinceAndLevel(prov, formData.level, formData.examSubjects);
+      } else {
+        // 12ª Classe: uma única linha por universidade (só as que têm cursos do pacote escolhido)
+        const pkg = formData.examSubjects;
+        let unis = UNIVERSITY_CATALOG.filter(u => u.provinces.includes(prov) && u.units.some(x => x.pkg === pkg));
+        if (unis.length === 0) {
+          unis = UNIVERSITY_CATALOG.filter(u => u.units.some(x => x.pkg === pkg));
+          if (note && unis.length > 0) {
+            note.innerText = t.noteFallback;
+            note.classList.remove('hidden');
+          }
+        }
+        instList = unis.map(u => u.name);
+      }
+
+      if (!instList.includes(formData.university)) {
+        formData.university = instList[0] || '';
+        formData.unit = '';
+      }
+
+      instList.forEach((instName) => {
+        const card = document.createElement('div');
+        const isSelected = instName === formData.university;
+        card.className = `option-card ${isSelected ? 'selected' : ''}`;
+        card.innerText = instName;
+        card.onclick = () => {
+          if (formData.university !== instName) formData.unit = '';
+          selectCard('universityOptions', card, instName);
+          renderUnits();
+        };
+        container.appendChild(card);
+      });
+
+      renderUnits();
+    }
+
+    // NOVO: faculdades/unidades dentro da universidade escolhida
+    function renderUnits() {
+      const group = document.getElementById('unitsGroup');
+      const container = document.getElementById('unitOptions');
+      if (!group || !container) return;
+      container.innerHTML = '';
+
+      if (isTenth()) {
+        group.classList.add('hidden');
+        formData.unit = '';
+        savePersistedData();
+        return;
+      }
+      group.classList.remove('hidden');
+
+      const t = translations[formData.lang] || translations.pt;
+      const uni = getSelectedUni();
+      const units = uni ? uni.units.filter(u => u.pkg === formData.examSubjects) : [];
+
+      if (!units.find(u => u.name === formData.unit)) {
+        formData.unit = units.length ? units[0].name : '';
+      }
+      savePersistedData();
+
+      const idx = getCourseIndex();
+      units.forEach(unit => {
+        const card = document.createElement('div');
+        card.className = `option-card ${unit.name === formData.unit ? 'selected' : ''}`;
+        const courseNames = unit.courses.map(k => idx[k] ? idx[k].rawTitle.replace('Licenciatura em ', '') : '').filter(Boolean).join(', ');
+        const exams = unit.courses.length && idx[unit.courses[0]] ? idx[unit.courses[0]].exams : '';
+        card.innerHTML = `<span>${unit.name}<br><small style="font-weight:400; opacity:0.85;">${t.lblCoursesWord}: ${courseNames}</small><br><small style="font-weight:400; opacity:0.85;">${t.lblExamsWord}: ${exams}</small></span>`;
+        card.onclick = () => selectUnit(card, unit.name);
+        container.appendChild(card);
+      });
+    }
+
+    function selectUnit(element, unitName) {
+      document.querySelectorAll('#unitOptions .option-card').forEach(c => c.classList.remove('selected'));
+      element.classList.add('selected');
+      formData.unit = unitName;
+      savePersistedData();
+    }
+
+    function nextStep(stepNumber) {
+      if (stepNumber === 2) {
+        const nameInputEl = document.getElementById('userName');
+        const nameInput = nameInputEl ? nameInputEl.value.trim() : '';
+        if (!nameInput) {
+          alert('Por favor, insira o teu nome completo.');
+          return;
+        }
+        if (!formData.province) {
+          alert('Por favor, selecione uma província na lista.');
+          return;
+        }
+        formData.name = nameInput.startsWith('Senhor') || nameInput.startsWith('Senhora') 
+          ? nameInput 
+          : 'Senhor(a) ' + nameInput;
+      }
+
+      if (stepNumber === 3) {
+        renderInstitutions();
+      }
+
+      if (stepNumber === 4) {
+        if (!isTenth() && !getSelectedUnit()) {
+          const tt = translations[formData.lang] || translations.pt;
+          alert(tt.alertUnit);
+          return;
+        }
+      }
+
+      savePersistedData();
+
+      for (let i = 1; i <= 6; i++) {
+        const stepEl = document.getElementById(`step-${i}`);
+        if (stepEl) stepEl.classList.add('hidden');
+      }
+
+      const targetStep = document.getElementById(`step-${stepNumber}`);
+      if (targetStep) targetStep.classList.remove('hidden');
+
+      const progressMap = { 1: 16, 2: 33, 3: 50, 4: 68, 5: 85, 6: 100 };
+      const progressEl = document.getElementById('progress');
+      if (progressEl) progressEl.style.width = (progressMap[stepNumber] || 16) + '%';
+    }
+
+    function proceedAfterPayment() {
+      populateCoursesForExamGroup();
+      nextStep(5);
+    }
+
+    function getShortUniCode(uniFullName) {
+      if (!uniFullName) return 'MZ';
+      if (uniFullName.includes('IIM') || uniFullName.includes('ICM') || uniFullName.includes('Técnico') || uniFullName.includes('IICB')) return 'Ensino Médio Técnico';
+      if (uniFullName.includes('UCM')) return 'UCM';
+      if (uniFullName.includes('UniLúrio')) return 'UniLúrio';
+      if (uniFullName.includes('UniZambeze')) return 'UniZambeze';
+      if (uniFullName.includes('FENG')) return 'UEM - FENG';
+      if (uniFullName.includes('DMI')) return 'UEM - DMI';
+      if (uniFullName.includes('(UEM)')) return 'UEM';
+      return uniFullName.split(' ')[0];
+    }
+
+    function populateCoursesForExamGroup() {
+      const firstContainer = document.getElementById('firstCourseOptions');
+      const secondContainer = document.getElementById('secondCourseOptions');
+      if (!firstContainer || !secondContainer) return;
+
+      firstContainer.innerHTML = '';
+      secondContainer.innerHTML = '';
+
+      const lists = getCourseLists();
+      const opt1Items = lists.opt1;
+      const opt2Items = lists.opt2;
+
+      if (opt1Items.length > 0) formData.firstCourseKey = opt1Items[0].key;
+      if (opt2Items.length > 0) formData.secondCourseKey = (opt2Items[1] || opt2Items[0]).key;
+
+      opt1Items.forEach((course) => {
+        const card = document.createElement('div');
+        const isSelected = course.key === formData.firstCourseKey;
+        card.className = `option-card ${isSelected ? 'selected' : ''}`;
+        card.innerText = `${course.rawTitle} (${courseShort(course.key)})`;
+        card.onclick = () => selectFirstCourse(card, course.key);
+        firstContainer.appendChild(card);
+      });
+
+      opt2Items.forEach((course) => {
+        const card = document.createElement('div');
+        const isSelected = course.key === formData.secondCourseKey;
+        card.className = `option-card ${isSelected ? 'selected-second' : ''}`;
+        card.innerText = `${course.rawTitle} (${courseShort(course.key)})`;
+        card.onclick = () => selectSecondCourse(card, course.key);
+        secondContainer.appendChild(card);
+      });
+
+      renderCourseDetails();
+    }
+
+    const IMG_PLACEHOLDER = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="600" height="300"><rect width="100%" height="100%" fill="#182642"/><text x="50%" y="46%" fill="#94a3b8" font-size="22" text-anchor="middle" font-family="Arial">🖼️ Foto indisponível</text><text x="50%" y="60%" fill="#64748b" font-size="15" text-anchor="middle" font-family="Arial">Abre no Chrome com internet</text></svg>');
+    function setImgSafe(el, src) {
+      if (!el) return;
+      el.onerror = () => { el.onerror = null; el.src = IMG_PLACEHOLDER; };
+      el.src = src || IMG_PLACEHOLDER;
+    }
+
+    function renderCourseDetails() {
+      const lists = getCourseLists();
+      const opt1Items = lists.opt1;
+      const opt2Items = lists.opt2;
+
+      const allCourses = [...opt1Items, ...opt2Items];
+      const activeKey = (formData.currentDetailView === 1) ? formData.firstCourseKey : formData.secondCourseKey;
+      let course = allCourses.find(c => c.key === activeKey) || allCourses[0];
+      if (!course) return;
+
+      const setVal = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.innerText = val || '';
+      };
+
+      setVal('displayUser', formData.name);
+      setVal('displayLevel', formData.level.split(' ')[0]);
+      setVal('displayProvince', formData.province);
+      setVal('displayUniversity', institutionLabel());
+
+      const displayTitle = `${course.rawTitle} (${courseShort(course.key)})`;
+
+      const t = translations[formData.lang] || translations.pt;
+      const optionLabel = (formData.currentDetailView === 1) ? t.lblOpt1 : t.lblOpt2;
+      setVal('courseTitle', `Visualizando: ${optionLabel} - ${displayTitle}`);
+      setVal('courseDuration', "⏱ Duração: " + course.duration);
+      setVal('courseDesc', course.desc);
+      setVal('courseWorkplace', course.workplace);
+      setVal('courseExams', course.exams);
+
+      const imgMainEl = document.getElementById('courseImgMain');
+      setImgSafe(imgMainEl, course.imgMain);
+      const imgSub1El = document.getElementById('courseImgSub1');
+      setImgSafe(imgSub1El, course.imgSub1);
+      
+      const imgSub2El = document.getElementById('courseImgSub2');
+      if (imgSub2El) {
+        setImgSafe(imgSub2El, course.imgSub2);
+        imgSub2El.style.display = course.imgSub2 ? '' : 'none';
+      }
+    }
+
+    function confirmDefinitiveCourse() {
+      const lists = getCourseLists();
+      const opt1Items = lists.opt1;
+      const opt2Items = lists.opt2;
+
+      const allCourses = [...opt1Items, ...opt2Items];
+      const course1 = allCourses.find(c => c.key === formData.firstCourseKey) || opt1Items[0];
+      const course2 = allCourses.find(c => c.key === formData.secondCourseKey) || opt2Items[0] || course1;
+      
+      if (!formData.refCode) {
+        formData.refCode = 'POA-MZ-2026-' + Date.now().toString(36).toUpperCase() + '-' + Math.floor(1000 + Math.random() * 9000);
+        savePersistedData();
+      }
+
+      const setVal = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.innerText = val || '';
+      };
+
+      setVal('certRefCode', formData.refCode);
+      setVal('certName', formData.name);
+      setVal('certProvince', formData.province);
+      setVal('certLevel', formData.level);
+      setVal('certUniversity', institutionLabel());
+      
+      setVal('certCourse1', `${course1.rawTitle} (${courseShort(course1.key)})`);
+      setVal('certCourse2', `${course2.rawTitle} (${courseShort(course2.key)})`);
+
+      nextStep(6);
+    }
+
+    function resetApp() {
+      try { localStorage.removeItem(STORAGE_KEY); } catch (e2) {}
+      formData = Object.assign({}, DEFAULT_FORM, { lang: formData.lang });
+      const nameInputEl = document.getElementById('userName');
+      if (nameInputEl) nameInputEl.value = '';
+      
+      document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected', 'selected-second'));
+      nextStep(1);
+    }
+
+    window.onload = function() {
+      const btnTeste = document.getElementById('btnModoTeste');
+      if (btnTeste && !MODO_TESTE) btnTeste.classList.add('hidden');
+
+      const savedData = loadPersistedData();
+      if (savedData && savedData.lang) {
+        formData = Object.assign({}, DEFAULT_FORM, savedData);
+        const langSelectEl = document.getElementById('langSelect');
+        if (langSelectEl) langSelectEl.value = formData.lang;
+        changeLanguage(formData.lang);
+      } else {
+        changeLanguage('pt');
+      }
+
+      nextStep(1);
+
+      if (formData.name) {
+        const nameInputEl = document.getElementById('userName');
+        if (nameInputEl) nameInputEl.value = formData.name.replace(/^Senhor\(a\)\s*/, '');
+      }
+
+      if (formData.province) {
+        document.querySelectorAll('#provinceOptions .option-card').forEach(card => {
+          if (card.innerText.trim().includes(formData.province.split(' ')[0])) {
+            card.classList.add('selected');
+          }
+        });
+      }
+    };
+  </script>
+</body>
+</html>
